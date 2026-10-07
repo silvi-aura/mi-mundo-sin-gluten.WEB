@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mi Mundo Sin Gluten: una app práctica para consultar alimentos, etiquetas, recetas, menús, restaurantes y herramientas para vivir sin gluten con más tranquilidad." />
+  <title>Mi Mundo Sin Gluten | Tu guía sin TACC en el celular</title>
+
+  <style>
+    :root{
+      --ink:#17352f;
+      --ink-2:#355b52;
+      --cream:#fffaf7;
+      --paper:#ffffff;
+      --mint:#dff7f1;
+      --mint-2:#bde7dd;
+      --leaf:#168a72;
+      --leaf-dark:#0e5b4b;
+      --lime:#43c7bc;
+      --sun:#f27467;
+      --orange:#6f4a73;
+      --coral:#f27467;
+      --red:#d6535b;
+      --line:#e5ebe7;
+      --muted:#66766f;
+      --shadow:0 18px 60px rgba(38,78,62,.12);
+      --radius:24px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:var(--cream);
+      line-height:1.55;
+    }
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+
+    .wrap{
+      width:min(var(--max), calc(100% - 36px));
+      margin:0 auto;
+    }
+
+    /* NAV */
+    nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(255,250,241,.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(227,234,223,.85);
+    }
+    .nav-inner{
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:850;
+      letter-spacing:-.03em;
+    }
+    .brand-mark{
+      width:40px;height:40px;
+      border-radius:13px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--leaf-dark),var(--lime));
+      color:white;
+      box-shadow:0 10px 24px rgba(46,125,97,.25);
+      font-size:21px;
+    }
+    .nav-cta{
+      background:linear-gradient(135deg,#163d34,#0f6b5a);
+      color:#fff;
+      padding:11px 17px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.92rem;
+    }
+
+    /* HERO */
+    .hero{
+      padding:66px 0 46px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 8% 14%, rgba(67,199,188,.24), transparent 30%),
+        radial-gradient(circle at 94% 8%, rgba(242,116,103,.20), transparent 28%),
+        linear-gradient(180deg, #fffdf8 0%, var(--cream) 70%);
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:42px;
+      align-items:center;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border:1px solid var(--mint-2);
+      background:rgba(255,255,255,.75);
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:850;
+      color:var(--leaf-dark);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    h1{
+      margin:18px 0 16px;
+      font-size:clamp(2.55rem, 5.2vw, 5rem);
+      line-height:.98;
+      letter-spacing:-.065em;
+      max-width:770px;
+    }
+    .hero h1 span{
+      display:inline;
+      background:linear-gradient(90deg,var(--leaf-dark),var(--coral-dark),var(--leaf));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero p.lead{
+      margin:0;
+      max-width:720px;
+      font-size:clamp(1.05rem, 1.7vw, 1.3rem);
+      color:var(--ink-2);
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:26px 0 18px;
+    }
+    .btn{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:9px;
+      min-height:52px;
+      padding:14px 21px;
+      border-radius:16px;
+      font-weight:900;
+      border:2px solid transparent;
+      transition:.2s ease;
+      cursor:pointer;
+    }
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,#dc564c,var(--coral) 55%,#ee9277);
+      box-shadow:0 16px 34px rgba(220,86,76,.28);
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 42px rgba(220,86,76,.34)}
+    .btn-secondary{
+      background:#fff;
+      border-color:var(--line);
+      color:var(--ink);
+    }
+    .micro-proof{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px 22px;
+      color:var(--muted);
+      font-size:.92rem;
+      font-weight:650;
+    }
+    .micro-proof span::before{content:"✓"; color:var(--leaf); margin-right:6px;font-weight:950}
+
+    /* PHONE MOCKUP */
+    .hero-visual{
+      position:relative;
+      min-height:520px;
+      display:grid;
+      place-items:center;
+    }
+    .blob{
+      position:absolute;
+      inset:40px 20px;
+      border-radius:46px;
+      background:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.85), transparent 25%),
+        radial-gradient(circle at 78% 25%, rgba(242,116,103,.18), transparent 24%),
+        linear-gradient(145deg,#d9f5ee,#e9f7f3 45%,#fbe2dc);
+      transform:rotate(5deg);
+    }
+    .phone{
+      width:min(330px, 78%);
+      aspect-ratio:9/18.2;
+      border:10px solid #102f25;
+      border-radius:38px;
+      background:#f6fbf8;
+      box-shadow:0 35px 80px rgba(20,54,43,.28);
+      position:relative;
+      z-index:2;
+      overflow:hidden;
+    }
+    .notch{
+      position:absolute;
+      top:0;left:50%;
+      transform:translateX(-50%);
+      width:120px;height:24px;
+      background:#102f25;
+      border-radius:0 0 17px 17px;
+      z-index:3;
+    }
+    .screen{
+      height:100%;
+      padding:34px 16px 16px;
+      background:
+        linear-gradient(180deg,#f3fbf9 0%,#fffaf8 62%,#eef8f7 100%);
+    }
+    .appbar{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:16px;
+    }
+    .app-title{font-weight:950;font-size:1.07rem}
+    .mode{
+      width:34px;height:34px;border-radius:11px;
+      background:#fff;border:1px solid var(--line);
+      display:grid;place-items:center;
+    }
+    .search{
+      background:#fff;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:.78rem;
+      color:#7e8a84;
+      margin-bottom:12px;
+    }
+    .traffic{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin:10px 0 14px;
+    }
+    .light{
+      border-radius:15px;
+      padding:11px 8px;
+      text-align:center;
+      font-weight:900;
+      font-size:.68rem;
+    }
+    .l-green{background:#dff1d2;color:#456e33}
+    .l-yellow{background:#fff0bf;color:#8b6a18}
+    .l-red{background:#ffd9d7;color:#94423f}
+    .mini-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:17px;
+      padding:12px;
+      margin:9px 0;
+    }
+    .mini-title{font-weight:850;font-size:.78rem}
+    .mini-copy{font-size:.68rem;color:var(--muted);margin-top:3px}
+    .phone-bottom{
+      position:absolute;left:12px;right:12px;bottom:11px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:17px;
+      padding:9px 8px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      text-align:center;
+      font-size:.58rem;
+      color:var(--muted);
+      z-index:4;
+    }
+    .phone-bottom b{display:block;color:var(--leaf-dark);font-size:.95rem;line-height:1}
+
+    .float-chip{
+      position:absolute;
+      z-index:4;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:rgba(255,255,255,.93);
+      border:1px solid #dce9df;
+      box-shadow:var(--shadow);
+      padding:12px 14px;
+      border-radius:18px;
+      font-size:.83rem;
+      font-weight:850;
+    }
+    .chip-1{left:4%; top:21%}
+    .chip-2{right:0; top:55%}
+    .chip-3{left:7%; bottom:13%}
+    .float-chip strong{display:block}
+    .chip-icon{
+      width:34px;height:34px;border-radius:11px;
+      display:grid;place-items:center;
+      background:var(--mint);
+    }
+
+    /* SECTIONS */
+    section{padding:76px 0}
+    .section-head{
+      max-width:760px;
+      margin:0 auto 38px;
+      text-align:center;
+    }
+    .kicker{
+      color:var(--leaf-dark);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      font-size:.76rem;
+    }
+    h2{
+      margin:10px 0 12px;
+      font-size:clamp(2rem,3.6vw,3.35rem);
+      line-height:1.03;
+      letter-spacing:-.045em;
+    }
+    .section-head p{margin:0;color:var(--muted);font-size:1.02rem}
+
+    .pain{
+      background:#ffffff;
+    }
+    .pain-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    .pain-card{
+      padding:26px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg,#fff,#fcfdf9);
+      box-shadow:0 12px 35px rgba(28,71,57,.07);
+    }
+    .pain-card .icon{
+      width:48px;height:48px;border-radius:14px;
+      display:grid;place-items:center;
+      background:#ffe1d8;
+      font-size:1.35rem;
+      margin-bottom:17px;
+    }
+    .pain-card h3{margin:0 0 8px;font-size:1.16rem}
+    .pain-card p{margin:0;color:var(--muted)}
+
+    .solution{
+      background:
+        radial-gradient(circle at 6% 30%, rgba(184,217,140,.32), transparent 28%),
+        linear-gradient(180deg,#edf8f0,#f7fbf4);
+    }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+    .feature-card{
+      position:relative;
+      overflow:hidden;
+      padding:28px;
+      border-radius:var(--radius);
+      background:#fff;
+      border:1px solid rgba(214,228,218,.9);
+      box-shadow:0 14px 40px rgba(28,71,57,.08);
+    }
+    .feature-card::after{
+      content:"";
+      position:absolute;
+      width:140px;height:140px;
+      right:-50px;top:-55px;
+      border-radius:50%;
+      background:rgba(231,246,239,.65);
+    }
+    .feature-card h3{margin:0 0 8px;font-size:1.18rem;position:relative;z-index:1}
+    .feature-card p{margin:0;color:var(--muted);position:relative;z-index:1}
+    .feature-tag{
+      display:inline-block;
+      margin-bottom:12px;
+      padding:5px 9px;
+      border-radius:999px;
+      background:#eee4f3;
+      color:#6f4a73;
+      font-weight:900;
+      font-size:.74rem;
+      position:relative;z-index:1;
+    }
+
+    .numbers{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin:20px 0 36px;
+    }
+    .number-card{
+      padding:22px 16px;
+      text-align:center;
+      border-radius:20px;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:0 12px 28px rgba(28,71,57,.06);
+    }
+    .number{
+      display:block;
+      font-size:2.3rem;
+      line-height:1;
+      font-weight:950;
+      color:var(--leaf-dark);
+      letter-spacing:-.06em;
+    }
+    .number-label{
+      display:block;
+      color:var(--muted);
+      font-size:.78rem;
+      font-weight:800;
+      margin-top:8px;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:.92fr 1.08fr;
+      gap:24px;
+      align-items:stretch;
+    }
+    .split-panel{
+      border-radius:30px;
+      padding:34px;
+      min-height:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .split-panel.green{
+      background:linear-gradient(145deg,#e5f8f4,#f8e9e5);
+      border-color:#cfe8e1;
+    }
+    .check-list{display:grid;gap:13px;margin:22px 0 0;padding:0;list-style:none}
+    .check-list li{display:flex;gap:11px;align-items:flex-start;color:var(--ink-2)}
+    .tick{
+      width:24px;height:24px;flex:none;
+      border-radius:8px;background:var(--leaf);color:#fff;
+      display:grid;place-items:center;font-size:.78rem;font-weight:950;
+      margin-top:1px;
+    }
+
+    .fomo{
+      background:
+        radial-gradient(circle at 84% 12%, rgba(242,116,103,.36), transparent 24%),
+        linear-gradient(135deg,#12382f,#116b5a 60%,#168a72);
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .fomo::before,.fomo::after{
+      content:"";
+      position:absolute;
+      width:320px;height:320px;border-radius:50%;
+      background:rgba(255,255,255,.06);
+    }
+    .fomo::before{right:-140px;top:-150px}
+    .fomo::after{left:-170px;bottom:-190px}
+    .fomo-inner{
+      position:relative;z-index:1;
+      display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;
+    }
+    .fomo h2{margin-top:0}
+    .fomo p{color:rgba(255,255,255,.83)}
+    .date-box{
+      background:linear-gradient(135deg,rgba(242,116,103,.18),rgba(67,199,188,.12));
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:24px;
+      padding:22px;
+      backdrop-filter:blur(8px);
+    }
+    .date-box .date{
+      font-size:1.25rem;font-weight:950;margin-bottom:5px
+    }
+    .date-box small{color:rgba(255,255,255,.78)}
+
+    .pricing{
+      background:#fffdf8;
+    }
+    .pricing-wrap{
+      max-width:790px;
+      margin:0 auto;
+    }
+    .offer{
+      border:2px solid #d4eadb;
+      border-radius:32px;
+      padding:34px;
+      box-shadow:0 22px 60px rgba(28,71,57,.12);
+      background:
+        radial-gradient(circle at 90% 10%, rgba(242,116,103,.18), transparent 27%),
+        radial-gradient(circle at 10% 100%, rgba(67,199,188,.16), transparent 25%),
+        #fff;
+      text-align:center;
+    }
+    .offer-badge{
+      display:inline-flex;
+      background:#e5f7f3;
+      color:var(--leaf-dark);
+      padding:8px 13px;
+      border-radius:999px;
+      font-weight:950;
+      font-size:.78rem;
+    }
+    .price{
+      font-size:clamp(3.8rem,8vw,6rem);
+      line-height:.95;
+      font-weight:950;
+      letter-spacing:-.075em;
+      color:var(--ink);
+      margin:17px 0 6px;
+      text-shadow:6px 6px 0 rgba(242,116,103,.10);
+    }
+    .price small{
+      display:block;
+      font-size:.95rem;
+      letter-spacing:0;
+      color:var(--muted);
+      margin-top:10px;
+      font-weight:700;
+    }
+    .offer-sub{
+      color:var(--muted);
+      margin:0 auto 22px;
+      max-width:540px;
+    }
+    .payment-note{
+      display:flex;flex-wrap:wrap;justify-content:center;
+      gap:8px 18px;
+      margin-top:15px;
+      font-size:.83rem;color:var(--muted);font-weight:750;
+    }
+    .payment-note span::before{content:"✓";color:var(--leaf);margin-right:6px}
+
+    .faq{
+      background:#f2f7f1;
+    }
+    .faq-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      max-width:940px;
+      margin:0 auto;
+    }
+    details{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px 19px;
+    }
+    summary{cursor:pointer;font-weight:900;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";float:right;font-size:1.2rem;color:var(--leaf)}
+    details[open] summary::after{content:"–"}
+    details p{margin:12px 0 0;color:var(--muted);font-size:.94rem}
+
+    .final{
+      padding:74px 0 100px;
+      background:
+        radial-gradient(circle at 50% 100%, rgba(184,217,140,.35), transparent 40%),
+        var(--cream);
+    }
+    .final-box{
+      max-width:920px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .final-box h2{max-width:800px;margin-left:auto;margin-right:auto}
+    .final-box p{color:var(--muted);max-width:700px;margin:0 auto 24px}
+
+    footer{
+      padding:28px 0 36px;
+      color:#738179;
+      font-size:.8rem;
+      text-align:center;
+      background:#fff;
+      border-top:1px solid var(--line);
+    }
+
+    /* FLOATING CTA */
+    .floating-cta{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:80;
+      display:flex;
+      align-items:center;
+      gap:13px;
+      background:linear-gradient(135deg,#143f35,#0f6b5a);
+      color:#fff;
+      padding:11px 11px 11px 17px;
+      border-radius:22px;
+      box-shadow:0 20px 55px rgba(20,58,49,.34);
+      border:1px solid rgba(255,255,255,.14);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    .floating-cta.hidden{
+      opacity:0;
+      transform:translateY(15px);
+      pointer-events:none;
+    }
+    .floating-text{
+      font-size:.76rem;
+      line-height:1.2;
+      font-weight:750;
+      white-space:nowrap;
+    }
+    .floating-text b{
+      display:block;
+      font-size:.91rem;
+      font-weight:950;
+      margin-bottom:2px;
+    }
+    .floating-text span{
+      color:rgba(255,255,255,.76);
+    }
+    .floating-actions{
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+    .floating-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      border:0;
+      border-radius:13px;
+      padding:10px 13px;
+      font-weight:950;
+      font-size:.79rem;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      white-space:nowrap;
+    }
+    .floating-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.03);
+    }
+    .floating-whatsapp{
+      background:#35c76f;
+      color:#fff;
+      box-shadow:0 8px 20px rgba(53,199,111,.25);
+    }
+    .floating-hotmart{
+      background:linear-gradient(135deg,var(--coral-dark),var(--coral));
+      color:#fff;
+      box-shadow:0 8px 22px rgba(220,86,76,.25);
+    }
+    .wa-icon{
+      width:18px;
+      height:18px;
+      border:2px solid rgba(255,255,255,.9);
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:.48rem;
+      line-height:1;
+    }
+
+    .disclaimer{
+      max-width:950px;
+      margin:18px auto 0;
+      text-align:center;
+      color:#7a857f;
+      font-size:.74rem;
+      line-height:1.5;
+    }
+
+    @media (max-width: 920px){
+      .hero-grid,.split,.fomo-inner{grid-template-columns:1fr}
+      .hero-visual{min-height:470px}
+      .feature-grid,.faq-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 720px){
+      .wrap{width:min(var(--max), calc(100% - 24px))}
+      .nav-inner{min-height:64px}
+      .nav-cta{padding:10px 13px;font-size:.84rem}
+      .hero{padding-top:42px}
+      section{padding:58px 0}
+      .hero-actions .btn{width:100%}
+      .micro-proof{gap:9px 14px;font-size:.84rem}
+      .hero-visual{min-height:425px}
+      .phone{width:275px}
+      .float-chip{font-size:.72rem;padding:10px}
+      .chip-1{left:0}
+      .chip-2{right:0}
+      .chip-3{left:0;bottom:7%}
+      .pain-grid,.feature-grid,.faq-grid,.numbers{grid-template-columns:1fr}
+      .split-panel,.offer{padding:25px}
+      .numbers{gap:10px}
+      .number-card{display:flex;align-items:center;gap:13px;text-align:left}
+      .number-label{margin-top:0}
+      .floating-cta{
+        right:10px;
+        left:10px;
+        bottom:10px;
+        justify-content:space-between;
+        padding:9px 9px 9px 12px;
+        border-radius:20px;
+        gap:8px;
+      }
+      .floating-text{
+        font-size:.68rem;
+      }
+      .floating-text b{
+        font-size:.79rem;
+      }
+      .floating-actions{
+        gap:5px;
+      }
+      .floating-btn{
+        padding:10px 10px;
+        font-size:.72rem;
+        border-radius:12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="#inicio" aria-label="Mi Mundo Sin Gluten">
+        <span class="brand-mark">🌿</span>
+        <span>Mi Mundo Sin Gluten</span>
+      </a>
+      <a class="nav-cta" href="#comprar">Ver acceso</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Tu guía sin TACC, donde la necesitás</span>
+          <h1>Dejá de mirar una etiqueta pensando: <span>“¿esto tendrá gluten?”</span></h1>
+          <p class="lead">
+            <strong>Mi Mundo Sin Gluten</strong> es una app para llevar en el celular y consultar en segundos,
+            estés en el supermercado, en un restaurante o cocinando en casa.
+          </p>
+
+          <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:#fff0ec;color:#dc564c;font-size:.78rem;font-weight:900;margin-top:16px;border:1px solid #ffd5cc;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#f27467;display:inline-block;box-shadow:0 0 0 5px rgba(242,116,103,.12);"></span>
+            Acceso completo · pago único
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#comprar">Quiero mi acceso por USD 12,99 →</a>
+            <a class="btn btn-secondary" href="#funciones">Quiero ver qué incluye</a>
+          </div>
+
+          <div class="micro-proof">
+            <span>Pago único</span>
+            <span>Sin mensualidad</span>
+            <span>Con nuevas novedades</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Vista ilustrativa de la aplicación en un teléfono">
+          <div class="blob"></div>
+
+          <div class="float-chip chip-1">
+            <div class="chip-icon">🚦</div>
+            <div><strong>Semáforo</strong><span>88 alimentos</span></div>
+          </div>
+
+          <div class="phone">
+            <div class="notch"></div>
+            <div class="screen">
+              <div class="appbar">
+                <div class="app-title">Mi Mundo Sin Gluten</div>
+                <div class="mode">☾</div>
+              </div>
+
+              <div class="search">🔎 Pegá o buscá un alimento...</div>
+
+              <div class="traffic">
+                <div class="light l-green">APTO</div>
+                <div class="light l-yellow">CON SELLO</div>
+                <div class="light l-red">GLUTEN</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">🕵️ Detective del gluten</div>
+                <div class="mini-copy">Identificá gluten escondido en ingredientes.</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">🍲 ¿Qué cocino hoy?</div>
+                <div class="mini-copy">Ideas según lo que tenés en casa.</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">🛒 Lista de compras</div>
+                <div class="mini-copy">Comprá con más seguridad.</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">📔 Diario de síntomas</div>
+                <div class="mini-copy">Registrá y llevá tu informe al médico.</div>
+              </div>
+
+              <div class="phone-bottom">
+                <div><b>🚦</b>Alimentos</div>
+                <div><b>🍴</b>Recetas</div>
+                <div><b>🧭</b>Guías</div>
+                <div><b>🤖</b>IA</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-chip chip-2">
+            <div class="chip-icon">🛒</div>
+            <div><strong>Lista inteligente</strong><span>más tranquilidad al comprar</span></div>
+          </div>
+
+          <div class="float-chip chip-3">
+            <div class="chip-icon">🤖</div>
+            <div><strong>Preguntale a una IA</strong><span>tu duda, lista para consultar</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pain">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Primero, el problema</div>
+          <h2>Vivir sin gluten no debería sentirse como un examen cada vez que comés.</h2>
+          <p>Porque las dudas aparecen en los momentos más simples… y justamente ahí necesitás una respuesta clara.</p>
+        </div>
+
+        <div class="pain-grid">
+          <article class="pain-card">
+            <div class="icon">🏷️</div>
+            <h3>Leés ingredientes y seguís dudando</h3>
+            <p>No sabés si un ingrediente es seguro, si necesita sello o si conviene evitarlo.</p>
+          </article>
+
+          <article class="pain-card">
+            <div class="icon">🍽️</div>
+            <h3>Comer afuera puede generar ansiedad</h3>
+            <p>Preguntar, explicar la contaminación cruzada y confiar en un restaurante puede ser agotador.</p>
+          </article>
+
+          <article class="pain-card">
+            <div class="icon">🧠</div>
+            <h3>Tenés demasiada información dispersa</h3>
+            <p>Guías, consejos y listas por un lado. Una app práctica los concentra en un solo lugar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution" id="funciones">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Todo en un solo lugar</div>
+          <h2>La app que consultás justo cuando aparece la duda.</h2>
+          <p>Simple para el día a día, completa para cuando necesitás profundizar.</p>
+        </div>
+
+        <div class="numbers">
+          <div class="number-card">
+            <span class="number">88</span>
+            <span class="number-label">alimentos en semáforo</span>
+          </div>
+          <div class="number-card">
+            <span class="number">22</span>
+            <span class="number-label">guías prácticas</span>
+          </div>
+          <div class="number-card">
+            <span class="number">10</span>
+            <span class="number-label">recetas paso a paso</span>
+          </div>
+          <div class="number-card">
+            <span class="number">94</span>
+            <span class="number-label">comidas planificadas</span>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-tag">Compra sin dudas</span>
+            <h3>🚦 Semáforo de 88 alimentos</h3>
+            <p>Consultá si un alimento es apto, si necesita sello o si contiene gluten. Además, pegá los ingredientes de una etiqueta y detectá dónde puede estar el gluten.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Información que entendés</span>
+            <h3>📚 22 guías claras</h3>
+            <p>Celiaquía, síntomas, diagnóstico, contaminación cruzada, comer afuera, viajes, chicos, familia y qué hacer si comiste gluten sin querer.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Menos “¿qué cocino?”</span>
+            <h3>🍲 Recetas y menús sin TACC</h3>
+            <p>10 recetas paso a paso y 4 menús con 3 semanas completas y viandas: 94 comidas ya planificadas para sacarte decisiones de encima.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Más herramientas, menos estrés</span>
+            <h3>🧰 Utilidades para el día a día</h3>
+            <p>¿Qué cocino hoy?, mensajes listos para comunicar tu celiaquía, medidor de confianza para restaurantes, detective del gluten escondido y lista de compras con semáforo.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Registrá lo que importa</span>
+            <h3>📔 Diario de síntomas + informe</h3>
+            <p>Llevá un registro de tus síntomas y generá un informe pensado para que puedas llevarlo a tu médico y conversar con más información.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Seguimiento</span>
+            <h3>🧭 “Mi intestino, mes a mes”</h3>
+            <p>Una herramienta para observar el proceso de recuperación y registrar cómo te sentís con el paso del tiempo.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Tu duda, sin vueltas</span>
+            <h3>🤖 Preguntale a una IA</h3>
+            <p>Tu consulta ya escrita, lista para llevar a una IA. Ideal para cuando necesitás ordenar una duda y saber qué preguntar.</p>
+          </article>
+
+          <article class="feature-card">
+            <span class="feature-tag">Accesibilidad</span>
+            <h3>🌙 Modo día y noche + letra grande</h3>
+            <p>Elegí cómo mirar la app y aumentá el tamaño de letra para una lectura más cómoda en cualquier momento.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap split">
+        <div class="split-panel green">
+          <div class="kicker">Pensada para la vida real</div>
+          <h2>No necesitás memorizarlo todo.</h2>
+          <p style="color:var(--ink-2);margin-bottom:0">
+            Necesitás tener la información importante cerca cuando realmente la vas a usar.
+          </p>
+          <ul class="check-list">
+            <li><span class="tick">✓</span><span>En el súper: revisás un alimento antes de ponerlo en el carrito.</span></li>
+            <li><span class="tick">✓</span><span>En un restaurante: explicás tu condición y evaluás el nivel de confianza.</span></li>
+            <li><span class="tick">✓</span><span>En casa: encontrás una receta o resolvés qué cocinar hoy.</span></li>
+            <li><span class="tick">✓</span><span>Ante una duda: consultás tus guías y herramientas sin buscar durante horas.</span></li>
+          </ul>
+        </div>
+
+        <div class="split-panel">
+          <div class="kicker">Más que recetas</div>
+          <h2>Es una caja de herramientas para tu día a día sin gluten.</h2>
+          <p style="color:var(--muted)">
+            Desde la compra hasta una salida a comer, la idea es que tengas una referencia práctica,
+            organizada y siempre a mano.
+          </p>
+          <div style="margin-top:22px;display:grid;gap:10px">
+            <div style="padding:14px 16px;background:#f7faf6;border:1px solid var(--line);border-radius:16px;font-weight:850">🛍️ Comprar con más seguridad</div>
+            <div style="padding:14px 16px;background:#f7faf6;border:1px solid var(--line);border-radius:16px;font-weight:850">🍴 Salir a comer con un plan</div>
+            <div style="padding:14px 16px;background:#f7faf6;border:1px solid var(--line);border-radius:16px;font-weight:850">🍲 Organizar tus comidas</div>
+            <div style="padding:14px 16px;background:#f7faf6;border:1px solid var(--line);border-radius:16px;font-weight:850">📔 Registrar cómo te sentís</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fomo">
+      <div class="wrap fomo-inner">
+        <div>
+          <div class="kicker" style="color:#dff3e8">Y esto no termina hoy</div>
+          <h2>Pagás una sola vez y las nuevas novedades también quedan incluidas.</h2>
+          <p>
+            No hay una cuota mensual que te siga cobrando para mantener el acceso.
+            Y cuando se agreguen nuevos contenidos, también forman parte de tu acceso.
+          </p>
+        </div>
+
+        <div class="date-box">
+          <div class="date">📅 Próxima novedad: 1 de diciembre</div>
+          <small>Se abre la guía “Navidad y Año Nuevo sin TACC” con su receta de budín.</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="comprar">
+      <div class="wrap pricing-wrap">
+        <div class="section-head">
+          <div class="kicker">Acceso</div>
+          <h2>Una sola compra. Sin mensualidades.</h2>
+          <p>Tu acceso a Mi Mundo Sin Gluten para llevarlo en el celular y consultar cuando lo necesitás.</p>
+        </div>
+
+        <div class="offer">
+          <span class="offer-badge">PAGO ÚNICO · SIN SUSCRIPCIÓN</span>
+          <div class="price">USD 12,99 <small>pago único</small></div>
+          <p class="offer-sub">
+            Todo lo que ves en esta página + las novedades que se vayan sumando a la aplicación.
+          </p>
+
+          <!-- Reemplazá el enlace del botón por tu checkout -->
+          <a class="btn btn-primary" id="checkoutButton" href="#" style="width:min(100%,520px)">Quiero Mi Mundo Sin Gluten →</a>
+
+          <div class="payment-note">
+            <span>Sin pagos mensuales</span>
+            <span>Acceso con nuevas novedades</span>
+            <span>Diseñada para llevar en el celular</span>
+          </div>
+
+          <div class="disclaimer">
+            La aplicación es una herramienta informativa y de organización. No reemplaza el diagnóstico,
+            tratamiento ni las indicaciones de un profesional de la salud.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Preguntas rápidas</div>
+          <h2>Antes de entrar, esto es lo que necesitás saber.</h2>
+        </div>
+
+        <div class="faq-grid">
+          <details>
+            <summary>¿Tengo que pagar todos los meses?</summary>
+            <p>No. El acceso está planteado con un único pago de USD 12,99.</p>
+          </details>
+
+          <details>
+            <summary>¿Las nuevas funciones se pagan aparte?</summary>
+            <p>No. La propuesta de la aplicación es que las novedades que se agreguen queden incluidas en tu acceso.</p>
+          </details>
+
+          <details>
+            <summary>¿Sirve para el supermercado?</summary>
+            <p>Sí. El semáforo de alimentos, el análisis de ingredientes y la lista de compras están pensados especialmente para ese momento.</p>
+          </details>
+
+          <details>
+            <summary>¿También puedo usarla cuando salgo a comer?</summary>
+            <p>Sí. Incluye mensajes listos para comunicar tu celiaquía y un medidor de confianza para restaurantes.</p>
+          </details>
+
+          <details>
+            <summary>¿Incluye recetas y menús?</summary>
+            <p>Sí. Incluye 10 recetas paso a paso y 4 menús, con 3 semanas completas, viandas y 94 comidas planificadas.</p>
+          </details>
+
+          <details>
+            <summary>¿Puedo usarla de noche?</summary>
+            <p>Sí. Tiene modo día y noche y opción de letra grande para facilitar la lectura.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="ultimo">
+      <div class="wrap final-box">
+        <div class="kicker">Tu próximo paso</div>
+        <h2>Que la próxima vez que aparezca la duda no tengas que buscar por toda internet.</h2>
+        <p>
+          Abrí la app, consultá y seguí con tu día. Todo en un solo lugar, con pago único.
+        </p>
+        <a class="btn btn-primary" href="#comprar">Quiero mi acceso por USD 12,99 →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © 2026 Mi Mundo Sin Gluten · Contenido informativo para acompañar una alimentación sin gluten.
+    </div>
+  </footer>
+
+  <div class="floating-cta" id="floatingCta" aria-label="Opciones de contacto y compra">
+    <div class="floating-text">
+      <b>¿Querés entrar?</b>
+      <span>USD 12,99 · pago único</span>
+    </div>
+
+    <div class="floating-actions">
+      <a class="floating-btn floating-whatsapp"
+         href="https://wa.me/5493492418616?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Mi%20Mundo%20Sin%20Gluten."
+         target="_blank" rel="noopener"
+         aria-label="Consultar por WhatsApp">
+        <span class="wa-icon">◉</span>
+        WhatsApp
+      </a>
+
+      <a class="floating-btn floating-hotmart"
+         href="#comprar"
+         aria-label="Comprar Mi Mundo Sin Gluten">
+        Comprar
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // PEGÁ ACÁ TU LINK DE CHECKOUT
+    // ==========================================
+    const CHECKOUT_URL = "https://TU-CHECKOUT-AQUI.com";
+
+    const checkoutButton = document.getElementById("checkoutButton");
+    if (CHECKOUT_URL && !CHECKOUT_URL.includes("TU-CHECKOUT-AQUI")) {
+      checkoutButton.href = CHECKOUT_URL;
+      checkoutButton.target = "_blank";
+      checkoutButton.rel = "noopener";
+    } else {
+      checkoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("comprar").scrollIntoView({behavior:"smooth"});
+      });
+    }
+
+    // El CTA flotante se oculta al llegar a los últimos renglones,
+    // para no tapar el cierre de la página.
+    const floatingCta = document.getElementById("floatingCta");
+    const lastSection = document.getElementById("ultimo");
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          floatingCta.classList.toggle("hidden", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(lastSection);
+
+    // Fallback adicional para cuando el usuario está muy cerca del final.
+    window.addEventListener("scroll", () => {
+      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 170;
+      if (nearBottom) floatingCta.classList.add("hidden");
+    }, {passive:true});
+  </script>
+</body>
+</html>
